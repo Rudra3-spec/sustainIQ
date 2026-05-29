@@ -2,6 +2,7 @@ import React, { useState, useContext } from "react";
 import axios from "axios";
 import { useNavigate, Link, useLocation } from "react-router-dom";
 import { AuthContext } from "../context/AuthContext";
+const API_URL = "https://sustain-iq-backend.onrender.com";
 
 export default function Login() {
   const [formData, setFormData] = useState({ email: "", password: "" });
@@ -17,15 +18,19 @@ export default function Login() {
     e.preventDefault();
     try {
       // 1. Authenticate with Node.js Backend
-      const res = await axios.post(
-        "http://localhost:5000/api/auth/login",
-        formData,
-      );
+      // const res = await axios.post(
+      //   "http://localhost:5000/api/auth/login",
+      //   formData,
+      // );
+      const res = await axios.post(`${API_URL}/api/auth/login`, formData);
       const token = res.data.token;
       localStorage.setItem("token", token);
 
       // 2. Fetch the full user profile to update global state immediately
-      const userRes = await axios.get("http://localhost:5000/api/auth/user", {
+      // const userRes = await axios.get("http://localhost:5000/api/auth/user", {
+      //   headers: { "x-auth-token": token },
+      // });
+      const userRes = await axios.get(`${API_URL}/api/auth/user`, {
         headers: { "x-auth-token": token },
       });
 

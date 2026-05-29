@@ -18,6 +18,7 @@ import {
   Download,
 } from "lucide-react";
 import { AuthContext } from "../context/AuthContext";
+const API_URL = "https://sustain-iq-backend.onrender.com";
 
 export default function Dashboard() {
   // Pull user and loading state from context
@@ -36,7 +37,11 @@ export default function Dashboard() {
         const token = localStorage.getItem("token");
         if (!token) return;
 
-        const res = await axios.get("http://localhost:5000/api/auth/profile", {
+        // const res = await axios.get("http://localhost:5000/api/auth/profile", {
+        //   headers: { "x-auth-token": token },
+        // });
+
+        const res = await axios.get(`${API_URL}/api/auth/profile`, {
           headers: { "x-auth-token": token },
         });
 

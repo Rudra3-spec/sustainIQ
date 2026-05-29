@@ -3,6 +3,8 @@ import axios from "axios";
 import { useNavigate, Link } from "react-router-dom";
 import { AuthContext } from "../context/AuthContext"; // Import context
 
+const API_URL = "https://sustain-iq-backend.onrender.com";
+
 export default function Signup() {
   const [formData, setFormData] = useState({
     name: "",
@@ -16,15 +18,20 @@ export default function Signup() {
     e.preventDefault();
     try {
       // 1. Create account and get token back directly
-      const res = await axios.post(
-        "http://localhost:5000/api/auth/signup",
-        formData,
-      );
+      // const res = await axios.post(
+      //   "http://localhost:5000/api/auth/signup",
+      //   formData,
+      // );
+      const res = await axios.post(`${API_URL}/api/auth/signup`, formData);
+
       const token = res.data.token;
       localStorage.setItem("token", token);
 
       // 2. Fetch user data to populate context
-      const userRes = await axios.get("http://localhost:5000/api/auth/user", {
+      // const userRes = await axios.get("http://localhost:5000/api/auth/user", {
+      //   headers: { "x-auth-token": token },
+      // });
+      const userRes = await axios.get(`${API_URL}/api/auth/user`, {
         headers: { "x-auth-token": token },
       });
 

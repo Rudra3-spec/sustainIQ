@@ -5,6 +5,9 @@ import html2canvas from "html2canvas";
 import { AuthContext } from "../context/AuthContext";
 import Analytics from "./Analytics";
 
+const BACKEND_URL = "https://sustain-iq-backend.onrender.com";
+const ML_URL = "https://sustain-iq-ml.onrender.com";
+
 export default function Audit() {
   const { user } = useContext(AuthContext);
   const [features, setFeatures] = useState(Array(11).fill(""));
@@ -70,7 +73,10 @@ export default function Audit() {
 
     try {
       // 2. Get Prediction from Flask (Port 5001)
-      const mlRes = await axios.post("http://localhost:5001/predict", {
+      // const mlRes = await axios.post("http://localhost:5001/predict", {
+      //   features: featureArray,
+      // });
+      const mlRes = await axios.post(`${ML_URL}/predict`, {
         features: featureArray,
       });
 
@@ -87,8 +93,13 @@ export default function Audit() {
       setLatestAuditData({ score, features: featureArray });
 
       // 4. Save to Node.js/MongoDB (Port 5000)
+      // const dbRes = await axios.post(
+      //   "http://localhost:5000/api/auth/audit",
+      //   { score, features: featureArray },
+      //   { headers: { "x-auth-token": token } },
+      // );
       const dbRes = await axios.post(
-        "http://localhost:5000/api/auth/audit",
+        `${BACKEND_URL}/api/auth/audit`,
         { score, features: featureArray },
         { headers: { "x-auth-token": token } },
       );
