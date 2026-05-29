@@ -59,4 +59,5 @@ def predict():
         return jsonify({'error': str(e)}), 400
 if __name__ == "__main__":
     # Running on port 5001 to avoid conflict with Node.js
-    app.run(port=5001, debug=True)
+    port = int(os.environ.get("PORT", 5001))
+    app.run(host="0.0.0.0", port=port)

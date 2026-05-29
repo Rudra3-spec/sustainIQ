@@ -38,7 +38,13 @@ Thumbs.db
 # ------------------------
 .vscode/
 .idea/
-
+.venv/
+venv/
+node_modules/
+.env
+__pycache__/
+dist/
+build/
 # ------------------------
 # Logs
 # ------------------------
@@ -50,3 +56,6 @@ logs/
 # ------------------------
 *.sqlite3
 coverage/
+
+
+https://www.kaggle.com/datasets/shivansh123908/urban-planning-dataset
