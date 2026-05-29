@@ -21,6 +21,9 @@ try:
 except Exception as e:
     print(f"❌ Error loading files: {e}")
 @app.route('/predict', methods=['POST'])
+@app.route("/")
+def home():
+    return {"status": "ML API Running"}
 def predict():
     try:
         # 1. Get JSON from request
