@@ -19,17 +19,17 @@ export default function Audit() {
   const certificateRef = useRef(null);
 
   const labels = [
-    "Building Density",
-    "Road Connectivity",
-    "Public Transit Access",
-    "Air Quality Index",
-    "Green Cover %",
-    "Carbon Footprint",
-    "Population Density",
-    "Crime Rate",
-    "Avg Income",
-    "Renewable Energy",
-    "Disaster Risk",
+    "Building Density (0-1)",
+    "Road Connectivity (0-1)",
+    "Public Transit Access (0-1)",
+    "Air Quality Index (0-1)",
+    "Green Cover % (0-1)",
+    "Carbon Footprint (0-1)",
+    "Population Density (0-1)",
+    "Crime Rate (0-1)",
+    "Avg Income (0-1)",
+    "Renewable Energy Usage (0-1)",
+    "Disaster Risk Index (0-1)",
   ];
 
   const getBadge = (score) => {
@@ -143,6 +143,18 @@ export default function Audit() {
           <h2 className="text-3xl font-black text-white mb-6">
             Start <span className="text-green-500">Audit</span>
           </h2>
+
+          <div className="mb-5 p-4 bg-slate-800/50 border border-slate-700 rounded-xl">
+            <p className="text-sm text-gray-300">
+              Enter all values between{" "}
+              <span className="text-green-400 font-bold">0 and 1</span>
+            </p>
+            <p className="text-xs text-gray-500 mt-1">
+              0 = Low / Poor &nbsp;•&nbsp; 0.5 = Medium / Average &nbsp;•&nbsp;
+              1 = High / Excellent
+            </p>
+          </div>
+
           <form onSubmit={handlePredict} className="grid grid-cols-2 gap-4">
             {labels.map((label, i) => (
               <div key={i}>
@@ -151,14 +163,23 @@ export default function Audit() {
                 </label>
                 <input
                   type="number"
+                  min="0"
+                  max="1"
                   step="0.01"
                   required
                   className="w-full bg-slate-800 border border-slate-700 p-3 rounded-xl text-white focus:border-green-500 outline-none transition-all placeholder-slate-600"
                   value={features[i]}
                   onChange={(e) => {
-                    const newFeat = [...features];
-                    newFeat[i] = e.target.value;
-                    setFeatures(newFeat);
+                    const value = e.target.value;
+
+                    if (
+                      value === "" ||
+                      (parseFloat(value) >= 0 && parseFloat(value) <= 1)
+                    ) {
+                      const newFeat = [...features];
+                      newFeat[i] = value;
+                      setFeatures(newFeat);
+                    }
                   }}
                 />
               </div>
