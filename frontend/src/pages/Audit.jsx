@@ -150,8 +150,7 @@ export default function Audit() {
               <span className="text-green-400 font-bold">0 and 1</span>
             </p>
             <p className="text-xs text-gray-500 mt-1">
-              0 = Low / Poor &nbsp;•&nbsp; 0.5 = Medium / Average &nbsp;•&nbsp;
-              1 = High / Excellent
+              0 = Low &nbsp;•&nbsp; 0.5 = Medium &nbsp;•&nbsp; 1 = High
             </p>
           </div>
 
