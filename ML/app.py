@@ -17,9 +17,9 @@ SCALER_PATH = os.path.join(BASE_DIR, "scaler.pkl")
 try:
     model = joblib.load(MODEL_PATH)
     scaler = joblib.load(SCALER_PATH)
-    print("✅ Model and Scaler loaded successfully!")
+    print("[SUCCESS] Model and Scaler loaded successfully!")
 except Exception as e:
-    print(f"❌ Error loading files: {e}")
+    print(f"[ERROR] Error loading files: {e}")
 
 @app.route("/")
 def home():
@@ -60,7 +60,7 @@ def predict():
         return jsonify({'sustainability_score': float(prediction[0])})
 
     except Exception as e:
-        print(f"❌ Error during prediction: {str(e)}")
+        print(f"[ERROR] Error during prediction: {str(e)}")
         return jsonify({'error': str(e)}), 400
 if __name__ == "__main__":
     # Running on port 5001 to avoid conflict with Node.js

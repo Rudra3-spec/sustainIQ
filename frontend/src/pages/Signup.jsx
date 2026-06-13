@@ -3,7 +3,7 @@ import axios from "axios";
 import { useNavigate, Link } from "react-router-dom";
 import { AuthContext } from "../context/AuthContext"; // Import context
 
-const API_URL = "https://sustain-iq-backend.onrender.com";
+const API_URL = import.meta.env.VITE_API_URL || "http://localhost:5000";
 
 export default function Signup() {
   const [formData, setFormData] = useState({

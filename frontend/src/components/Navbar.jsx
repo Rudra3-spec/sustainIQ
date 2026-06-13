@@ -1,16 +1,13 @@
 import React, { useContext } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { Leaf, LayoutDashboard, Search, LogOut, User } from "lucide-react";
 import { AuthContext } from "../context/AuthContext";
 
 export default function Navbar() {
-  const { user, setUser } = useContext(AuthContext);
-  const navigate = useNavigate();
+  const { user, logout } = useContext(AuthContext);
 
   const handleLogout = () => {
-    localStorage.removeItem("token");
-    setUser(null);
-    navigate("/login");
+    logout();
   };
 
   return (

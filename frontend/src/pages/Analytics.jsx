@@ -4,9 +4,10 @@ import {
   RadarChart,
   PolarGrid,
   PolarAngleAxis,
+  PolarRadiusAxis,
   ResponsiveContainer,
-  Legend,
   Tooltip,
+  Legend,
 } from "recharts";
 
 export default function Analytics({ latestAudit }) {
@@ -30,7 +31,7 @@ export default function Analytics({ latestAudit }) {
 
   const data = latestAudit.features.map((val, i) => ({
     subject: labels[i],
-    Property: val,
+    Property: val * 100,
     CityAvg: cityAverage[i],
   }));
 

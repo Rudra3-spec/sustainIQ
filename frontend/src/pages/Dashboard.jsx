@@ -18,28 +18,22 @@ import {
   Download,
 } from "lucide-react";
 import { AuthContext } from "../context/AuthContext";
-const API_URL = "https://sustain-iq-backend.onrender.com";
+const API_URL = import.meta.env.VITE_API_URL || "http://localhost:5000";
 
 export default function Dashboard() {
-  // Pull user and loading state from context
   const auth = useContext(AuthContext);
 
-  if (!auth) return null;
-
-  const { user, loading } = auth;
   const [history, setHistory] = useState([]);
   const [stats, setStats] = useState({ avg: 0, total: 0 });
   const [rawAudits, setRawAudits] = useState([]);
 
   useEffect(() => {
+    if (!auth || auth.loading) return;
+
     const fetchHistory = async () => {
       try {
         const token = localStorage.getItem("token");
         if (!token) return;
-
-        // const res = await axios.get("http://localhost:5000/api/auth/profile", {
-        //   headers: { "x-auth-token": token },
-        // });
 
         const res = await axios.get(`${API_URL}/api/auth/profile`, {
           headers: { "x-auth-token": token },
@@ -70,10 +64,8 @@ export default function Dashboard() {
       }
     };
 
-    if (!loading) {
-      fetchHistory();
-    }
-  }, [loading]);
+    fetchHistory();
+  }, [auth]);
 
   // CSV EXPORT LOGIC
   const downloadCSV = () => {
@@ -98,8 +90,22 @@ export default function Dashboard() {
     const csvRows = rawAudits.map((audit) => {
       const date = new Date(audit.date).toLocaleDateString();
       const score = (audit.score * 100).toFixed(2);
-      const features = audit.features.join(",");
-      return `${date},${score}%,${features}`;
+      // Denormalize features back to their original physical values
+      const denormFeatures = audit.features.map((val, i) => {
+        if (i === 0) return (val * 150).toFixed(0);
+        if (i === 1) return (val * 30).toFixed(0);
+        if (i === 2) return (val * 15).toFixed(0);
+        if (i === 3) return ((1 - val) * 500).toFixed(0);
+        if (i === 4) return (val * 100).toFixed(1);
+        if (i === 5) return ((1 - val) * 20).toFixed(1);
+        if (i === 6) return (val * 8000).toFixed(0);
+        if (i === 7) return ((1 - val) * 100).toFixed(1);
+        if (i === 8) return (val * 140 + 10).toFixed(0);
+        if (i === 9) return (val * 100).toFixed(1);
+        if (i === 10) return ((1 - val) * 100).toFixed(1);
+        return val;
+      });
+      return `${date},${score}%,${denormFeatures.join(",")}`;
     });
 
     const csvContent = [headers.join(","), ...csvRows].join("\n");
@@ -116,6 +122,9 @@ export default function Dashboard() {
     a.click();
     document.body.removeChild(a);
   };
+
+  if (!auth) return null;
+  const { user, loading } = auth;
 
   // Prevent crash if context is still loading
   if (loading) {
